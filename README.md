@@ -13,6 +13,9 @@ It can also optionally sprinkle a set of realistic, real-world security misconfi
 | `Remove-ADLabUsers.ps1` | Tears a lab down completely so you can start over. |
 | `Find-ADLabMisconfigurations.ps1` | Independent auditor: inspects live AD and reports what it finds, without reading the answer key. Doubles as a self-grading tool. |
 | `New-ADLabUsers.Tests.ps1` | Pester tests for the logic in `ADLabHelpers.ps1`. |
+| `tools/InvokeADCheck/` | A git submodule (a fork of [sensepost/InvokeADCheck](https://github.com/sensepost/InvokeADCheck)) — a real third-party AD security auditor to run against the lab. See [`INVOKEADCHECK.md`](INVOKEADCHECK.md). |
+
+After cloning this repo, pull in that submodule with `git submodule update --init --recursive` (or clone with `--recurse-submodules` in the first place).
 
 ## Requirements
 
@@ -151,6 +154,8 @@ Each category can be individually turned off in the `$MisconfigTypes` table near
 Weak passwords can't be detected via LDAP alone. Pass `-TestWeakPasswords` to have it safely spray a small candidate list against accounts in the lab OU — it auto-caps attempts per account to (domain lockout threshold − 1) so it can't lock anyone out, and skips the spray entirely if the lockout policy leaves no safe margin. Still lab-domain-only.
 
 Pass `-SkipACLScan` to skip the (slower) per-account ACL check on very large labs.
+
+For a second opinion from a real, independent third-party tool (not written for this lab), see [`INVOKEADCHECK.md`](INVOKEADCHECK.md) — it covers running [InvokeADCheck](https://github.com/sensepost/InvokeADCheck) against the same lab, plus exactly which of this lab's misconfiguration categories it does and doesn't catch.
 
 ## Tearing a lab down
 
