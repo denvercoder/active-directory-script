@@ -1,4 +1,4 @@
-# New-ADLabUsers.ps1
+# AD User Generation For Labs
 
 A PowerShell script that builds a realistic Active Directory lab for training: a full org structure (OUs, security groups, distribution groups) for a fictitious medium-sized software company, populated with randomly generated employees — names, addresses, phone numbers, job titles, a manager hierarchy, and group memberships.
 
