@@ -420,6 +420,22 @@ do {
 } until ($mcInput -match '^(?i:true|false|t|f|y|n|yes|no)$')
 $addMisconfigs = $mcInput -match '^(?i:true|t|y|yes)$'
 
+do {
+    $pwModeInput = Read-Host "Would you like random passwords? (Y/N)"
+} until ($pwModeInput -match '^(?i:y|n|yes|no)$')
+$useRandomPasswords = $pwModeInput -match '^(?i:y|yes)$'
+
+$sharedPassword = $null
+if (-not $useRandomPasswords) {
+    do {
+        $sharedPassword = Read-Host "Enter the password to use for every user"
+        $meetsComplexity = $sharedPassword.Length -ge 8 -and $sharedPassword -cmatch '[A-Z]' -and $sharedPassword -match '\d' -and $sharedPassword -match '[^a-zA-Z0-9]'
+        if (-not $meetsComplexity) {
+            Write-Warning "Password must be at least 8 characters and include an uppercase letter, a number, and a special character."
+        }
+    } until ($meetsComplexity)
+}
+
 Write-Host "Requesting $userCount randomly generated identities from Mockaroo..." -ForegroundColor Cyan
 $mockData = Get-MockarooRecords -ApiKey $MockarooApiKey -Count $userCount
 if ($mockData.Count -lt $userCount) {
@@ -482,7 +498,7 @@ foreach ($d in $Departments) {
             $title = $d.ICTitles | Get-Random
         }
 
-        $password = New-RandomPassword
+        $password = if ($useRandomPasswords) { New-RandomPassword } else { $sharedPassword }
         $securePw = ConvertTo-SecureString $password -AsPlainText -Force
 
         $newUserParams = @{
