@@ -140,7 +140,7 @@ function Get-UniqueSamAccountName {
 function Get-DepartmentAllocation {
     param([int]$TotalUsers, [array]$Departments)
 
-    $totalWeight = ($Departments | Measure-Object -Property Weight -Sum).Sum
+    $totalWeight = ($Departments | ForEach-Object { $_.Weight } | Measure-Object -Sum).Sum
     $floor = @{}
     $remainder = @{}
     foreach ($d in $Departments) {
@@ -200,7 +200,7 @@ function Get-MockarooRecords {
 
 function Get-WeightedOffice {
     param([array]$Offices)
-    $totalWeight = ($Offices | Measure-Object -Property Weight -Sum).Sum
+    $totalWeight = ($Offices | ForEach-Object { $_.Weight } | Measure-Object -Sum).Sum
     $roll = Get-Random -Minimum 1 -Maximum ($totalWeight + 1)
     $running = 0
     foreach ($o in $Offices) {
