@@ -1,24 +1,16 @@
 # Running InvokeADCheck against this lab
 
-[InvokeADCheck](https://github.com/sensepost/InvokeADCheck) (by [SensePost](https://sensepost.com/)) is a third-party PowerShell module that runs a broad set of read-only Active Directory security checks and reports the results to the console, JSON, or Excel. It's vendored into this project as a git submodule at `tools/InvokeADCheck` (forked to [denvercoder/InvokeADCheck](https://github.com/denvercoder/InvokeADCheck), BSD-3-Clause license, unmodified) so you have a real, independent third-party tool to point at the lab alongside `Find-ADLabMisconfigurations.ps1`.
+[InvokeADCheck](https://github.com/sensepost/InvokeADCheck) (by [SensePost](https://sensepost.com/)) is a third-party PowerShell module that runs a broad set of read-only Active Directory security checks and reports the results to the console, JSON, or Excel. The built module is vendored directly into this repo at `tools/InvokeADCheck` (BSD-3-Clause license, unmodified — see `tools/InvokeADCheck/NOTICE.md` for provenance and our fork at [denvercoder/InvokeADCheck](https://github.com/denvercoder/InvokeADCheck)), so it comes along with a plain `git clone` of this project — no submodules, no extra setup step.
 
 Where our own auditor script mirrors exactly what the generator injects, InvokeADCheck doesn't know or care that this is a lab — it's the same tool you'd run against a real environment. Running both against the same lab is a good exercise in itself: **no single tool catches everything**, and seeing what InvokeADCheck misses is as instructive as seeing what it finds.
 
 ## Setup
 
-If you haven't cloned this project with `--recurse-submodules`, pull the submodule in first:
+Nothing to install or build — just import the module from where it already lives in this repo:
 
 ```powershell
-git submodule update --init --recursive
+Import-Module .\tools\InvokeADCheck\InvokeADCheck.psm1
 ```
-
-The submodule already ships a pre-built release, so there's nothing to compile — just import it directly:
-
-```powershell
-Import-Module .\tools\InvokeADCheck\release\InvokeADCheck\InvokeADCheck.psm1
-```
-
-(The upstream `README.md` inside `tools/InvokeADCheck` also documents installing from their published `Install.ps1` instead, if you'd rather pull straight from GitHub than use the vendored copy.)
 
 ## Running it against a lab you generated here
 
@@ -34,7 +26,7 @@ It scans the whole domain, not just the lab's OU — on a dedicated lab/training
 
 ## What it will and won't catch, mapped to this lab's misconfiguration catalog
 
-This is based on reading the actual check source in `tools/InvokeADCheck/src/private/`, not just the feature list — a couple of checks fetch a property but don't end up flagging it, which is worth knowing before you trust a "clean" result.
+This is based on reading the actual check functions (bundled inside `tools/InvokeADCheck/InvokeADCheck.psm1`; also browsable at [sensepost/InvokeADCheck/src/private](https://github.com/sensepost/InvokeADCheck/tree/main/src/private)), not just the feature list — a couple of checks fetch a property but don't end up flagging it, which is worth knowing before you trust a "clean" result.
 
 | Our misconfiguration category | InvokeADCheck check | Catches it? |
 |---|---|---|
@@ -63,4 +55,4 @@ A side effect worth noticing, not a graded finding: every account this lab creat
 
 ## License note
 
-`tools/InvokeADCheck` is an unmodified fork of [sensepost/InvokeADCheck](https://github.com/sensepost/InvokeADCheck) by Niels Hofland and Justin Perdok, distributed under the BSD 3-Clause license (see `tools/InvokeADCheck/LICENSE.txt`). It's included here as a submodule, not copied into this repo's own code, so it stays independently updatable (`git submodule update --remote tools/InvokeADCheck`) and its license/history stay intact.
+`tools/InvokeADCheck` is an unmodified, vendored copy of the built [sensepost/InvokeADCheck](https://github.com/sensepost/InvokeADCheck) module (by Niels Hofland and Justin Perdok), distributed under the BSD 3-Clause license (see `tools/InvokeADCheck/LICENSE.txt`). See `tools/InvokeADCheck/NOTICE.md` for the exact version vendored and where to get updates.

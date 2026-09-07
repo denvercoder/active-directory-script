@@ -13,9 +13,7 @@ It can also optionally sprinkle a set of realistic, real-world security misconfi
 | `Remove-ADLabUsers.ps1` | Tears a lab down completely so you can start over. |
 | `Find-ADLabMisconfigurations.ps1` | Independent auditor: inspects live AD and reports what it finds, without reading the answer key. Doubles as a self-grading tool. |
 | `New-ADLabUsers.Tests.ps1` | Pester tests for the logic in `ADLabHelpers.ps1`. |
-| `tools/InvokeADCheck/` | A git submodule (a fork of [sensepost/InvokeADCheck](https://github.com/sensepost/InvokeADCheck)) — a real third-party AD security auditor to run against the lab. See [`INVOKEADCHECK.md`](INVOKEADCHECK.md). |
-
-After cloning this repo, pull in that submodule with `git submodule update --init --recursive` (or clone with `--recurse-submodules` in the first place).
+| `tools/InvokeADCheck/` | A vendored copy of [InvokeADCheck](https://github.com/sensepost/InvokeADCheck) — a real third-party AD security auditor to run against the lab. Comes with a plain clone, no extra setup. See [`INVOKEADCHECK.md`](INVOKEADCHECK.md). |
 
 ## Requirements
 
