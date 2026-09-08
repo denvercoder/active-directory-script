@@ -199,8 +199,8 @@ function Get-DepartmentAllocation {
     }
 
     # Keep the C-suite realistically small no matter how large the class is.
-    $execKey = ($Departments | Where-Object { $_.IsExecutive } | Select-Object -First 1 -ExpandProperty Key)
-    $icKey   = ($Departments | Sort-Object -Property Weight -Descending | Where-Object { -not $_.IsExecutive } | Select-Object -First 1 -ExpandProperty Key)
+    $execKey = ($Departments | Where-Object { $_.IsExecutive } | Select-Object -First 1).Key
+    $icKey   = ($Departments | Sort-Object -Property { $_.Weight } -Descending | Where-Object { -not $_.IsExecutive } | Select-Object -First 1).Key
     if ($execKey -and $floor.ContainsKey($execKey) -and $floor[$execKey] -gt 5) {
         $overflow = $floor[$execKey] - 5
         $floor[$execKey] = 5
