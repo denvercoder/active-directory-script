@@ -319,11 +319,11 @@ function Get-OfflineIdentityRecords {
         $records.Add([pscustomobject]@{
             first_name     = Get-Random -InputObject $script:OfflineFirstNames
             last_name      = Get-Random -InputObject $script:OfflineLastNames
-            street_address = "{0} {1}" -f (Get-Random -Minimum 100 -Maximum 9999), (Get-Random -InputObject $script:OfflineStreetNames)
+            street_address = ("{0} {1}" -f (Get-Random -Minimum 100 -Maximum 9999), (Get-Random -InputObject $script:OfflineStreetNames))
             city           = $office.City
             state_abbr     = $office.State
             postal_code    = '{0:D5}' -f (Get-Random -Minimum 10000 -Maximum 99999)
-            mobile_phone   = '{0}-555-{1:D4}' -f $office.AreaCode, (Get-Random -Minimum 0 -Maximum 9999)
+            mobile_phone   = ('{0}-555-{1:D4}' -f $office.AreaCode, (Get-Random -Minimum 0 -Maximum 9999))
         })
     }
     return $records
